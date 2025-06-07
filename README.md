@@ -9,11 +9,65 @@
 
 ## 必要な環境
 
-- Node.js  
-  - Macの場合 `brew install node` でインストール
-- Docker  
-- Supabase CLI  
-  - Macの場合 `brew install supabase/tap/supabase` でインストール
+- Node.js
+- Docker
+- Supabase CLI
+
+### インストール for Mac
+
+   - Node.jsのインストール `brew install node`
+   - Dockerのインストール
+   ```
+   $ sudo hdiutil attach Docker.dmg
+   $ sudo /Volumes/Docker/Docker.app/Contents/MacOS/install
+   $ sudo hdiutil detach /Volumes/Docker
+   ```
+   - Supabase CLI `brew install supabase/tap/supabase`
+
+### インストール for Windows
+
+#### 事前準備
+
+   - PowerShell ver5.1以上 `PowerShell $PSVersionTable` で確認
+
+   - gitのインストール([公式サイト](https://gitforwindows.org/)) `git --version` で確認
+
+   - WSL2のインストール `wsl --version` で確認
+      - `cmd wsl --install` または `PowerShell wsl --install`
+      - いずれも管理者権限が必要
+
+   - Hyper-Vの有効化
+      1. コントロールパネル > プログラムと機能 > Windowsの機能の有効化または無効化 > Windows ハイパーバイザープラットフォーム > チェックが入っているか確認 (デフォルトでは有効化)
+      1. 入ってない場合、チェックマークをつける。チェックマークをつけてもHyper-vが有効になっていない場合があるので、以下で確認
+      1. PowerShell(管理者権限)でHyper-vが有効になっているか確認 : `bcdedit` > hypervisorlaunchtype を参照 (AutoであればOK)
+      1. Offになっている場合、Hyper-vをAuto(有効)に変更 `bcdedit /set hypervisorlaunchtype auto`
+      1. Autoに変更したあとPCの再起動が必要です
+
+#### インストール
+
+   - Node.js
+      - [公式サイト](https://nodejs.org/ja)からインストーラーをダウンロードし、実行
+      - ver22.16.0 (25/06/06時点)
+      - npmも同時にインストールされます
+
+   - Supabase CLI
+      - cmd `npm install -g supabase`
+         - E404エラーが出てインストールに失敗する場合
+            1. Scoopをインストール
+            ```
+            powershell -Command "Set-ExecutionPolicy RemoteSigned -Scope CurrentUser"
+            powershell -Command "Invoke-WebRequest -Uri https://get.scoop.sh -OutFile install.ps1"
+            powershell -Command ".\install.ps1"
+            ```
+
+            2. Scoop で supabase をインストール
+            ```
+            scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
+            scoop install supabase
+            ```
+
+      - インストールされているか確認: `supabase --version`
+
 
 ## サービスの起動方法
 
@@ -119,7 +173,7 @@ npx supabase gen types typescript --local > utils/types/supabase.ts
    npm run test:e2e -- --project=chromium
    npm run test:e2e -- --project=firefox
    npm run test:e2e -- --project=webkit
-   
+
    # モバイルデバイス
    npm run test:e2e -- --project=mobile-chrome
    npm run test:e2e -- --project=mobile-safari
@@ -206,5 +260,5 @@ RLSテストは以下のテーブルに対して実装されています:
 ```bash
 npm run storybook
 ```
-
 `stories`ディレクトリにstorybookのファイルを配置してください。
+
